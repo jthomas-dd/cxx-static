@@ -8,6 +8,7 @@ fn main() {
         .cpp(true)
         .cpp_link_stdlib(None) // linked via link-cplusplus crate
         .flag_if_supported(cxxbridge_flags::STD)
+        .flag("/MT")
         .warnings_into_errors(cfg!(deny_warnings))
         .compile("cxxbridge1");
 
