@@ -3,12 +3,22 @@ use std::path::Path;
 use std::process::Command;
 
 fn main() {
+    #[cfg(target_os = "windows")]
     cc::Build::new()
         .file("src/cxx.cc")
         .cpp(true)
         .cpp_link_stdlib(None) // linked via link-cplusplus crate
         .flag_if_supported(cxxbridge_flags::STD)
         .flag("/MT")
+        .warnings_into_errors(cfg!(deny_warnings))
+        .compile("cxxbridge1");
+
+    #[cfg(not(target_os = "windows"))]
+    cc::Build::new()
+        .file("src/cxx.cc")
+        .cpp(true)
+        .cpp_link_stdlib(None) // linked via link-cplusplus crate
+        .flag_if_supported(cxxbridge_flags::STD)
         .warnings_into_errors(cfg!(deny_warnings))
         .compile("cxxbridge1");
 
